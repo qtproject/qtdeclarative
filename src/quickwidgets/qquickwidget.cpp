@@ -183,7 +183,8 @@ void QQuickWidgetPrivate::invalidateRenderControl()
 {
 #if QT_CONFIG(opengl)
     if (!useSoftwareRenderer) {
-        if (!context) // this is not an error, could be called before creating the context, or multiple times
+        QOpenGLContext *current =QOpenGLContext::currentContext();
+        if (!context || !current) // this is not an error, could be called before creating the context, or multiple times
             return;
 
         bool success = context->makeCurrent(offscreenSurface);
